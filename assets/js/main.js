@@ -101,4 +101,26 @@
       })
       .catch(function(){ render(fallback); });
   }
+
+  /* ---- Shorts de YouTube (recuperación de cuentas), 3 al azar por carga ---- */
+  var shortsGrid = document.getElementById('shortsGrid');
+  if(shortsGrid && window.GMJ_SHORTS && window.GMJ_SHORTS.length){
+    var vids = window.GMJ_SHORTS.slice();
+    for(var i = vids.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = vids[i]; vids[i] = vids[j]; vids[j] = t;
+    }
+    var pick = vids.slice(0, 3);
+    shortsGrid.innerHTML = pick.map(function(v){
+      return ''+
+        '<div class="card" style="padding:0;overflow:hidden">'+
+          '<div style="aspect-ratio:9/16;background:#000">'+
+            '<iframe width="100%" height="100%" style="border:0;display:block" '+
+            'src="https://www.youtube.com/embed/'+v.id+'" title="'+(v.title||'Short de YouTube').replace(/"/g,'&quot;')+'" '+
+            'loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'+
+          '</div>'+
+          '<div style="padding:18px"><h3 style="font-size:1.05rem;margin:0">'+(v.title||'')+'</h3></div>'+
+        '</div>';
+    }).join('');
+  }
 })();
